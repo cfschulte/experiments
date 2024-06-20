@@ -52,11 +52,20 @@ function ready() {
 					hsl_play = document.getElementById('workspace').innerHTML = new_html;
 					load_hsl_play(hsl_play);
 					break;
+				case 'pb3':
+					break;
 				default:
 					break;
 			}
 		});
 	}
+
+///////////	
+	var text_div = document.getElementById('text_div');
+	if(text_div != null) {
+		load_text_div(text_div);
+	}
+
 ///////////	
 	var hsl_play = document.getElementById('hsl_play');
 	if(hsl_play != null){
@@ -145,6 +154,67 @@ function load_artboard2(artboard2) {
 	});
 }
 
+
+//----------------------------------------
+function load_text_div(text_div) {
+	
+	// RANDOM button 
+	document.getElementById('get_random').addEventListener('click', function(event){
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "/experiments/backend.php", true);
+		xhr.responsetype = "json";
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		// send the request
+		xhr.send("action=get_random_text");
+		 
+		// Handle the response, when it comes.
+        xhr.onreadystatechange = function(event){
+          if (xhr.readyState == 4 && xhr.status == 200) {
+             
+             var response = JSON.parse(this.response);
+                 console.log(response);
+             document.getElementById('id').value = response.id;
+             document.getElementById('descriptor').value = response.descriptor;
+             document.getElementById('some_text').value = response.some_text;
+          }
+        };
+        // error
+        xhr.onerror = function(event) {
+          console.log(event);
+        };      
+	});
+
+	// UPDATE button
+	var update = document.getElementById('update');
+	// check to see if the update button needs to be disabled
+	if(document.getElementById('id').value === ""){
+		update.setAttribute("disabled", "disabled");
+	}
+	// otherwise let the listener update that row 
+	update.addEventListener('click', function(event){
+		var the_data = {};
+		the_data['id'] = document.getElementById('id').value;
+		the_data['descriptor'] = document.getElementById('descriptor').value;
+		the_data['some_text'] = document.getElementById('some_text').value;
+		
+		aj_promise = ajaxCall("update_text", the_data)
+		.then((json_response) =>{
+			console.log(json_response);
+		
+		}).catch((error) => {
+            console.log(`An error occured: ${error}`);
+        });
+		
+		
+	});
+	
+	// NEW TEXT button
+	document.getElementById('new_text').addEventListener('click', function(event){
+		console.log('it was clicked');
+	});
+}
+
+
 //----------------------------------------
 function load_hsl_play(hsl_play) {
 	var sliders = document.getElementsByClassName('slider') ;
@@ -203,6 +273,5 @@ async function ajaxCall(action='', data={}) {
 		throw new Error(`HTTP error: ${response.status}`);
 	 }
 
-// 	return response;
 	return response.json();
 }

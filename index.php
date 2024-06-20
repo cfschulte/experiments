@@ -19,13 +19,14 @@
  <div id="text_div">
    <input type="hidden" id="id" value="">
    <input type="text" id="descriptor" placeholder="Give a quick description" >
-   <textarea id="text_blob"  placeholder="What is on your mind?" ></textarea>
+   <textarea id="some_text"  placeholder="What is on your mind?" ></textarea>
    <div class="button_center">
    <button id="get_random">Random</button> <button id="update">Update</button> <button id="new_text">New</button>
    </div>
  </div>
 
 <!-- 
+
 <div id="hsl_play">
 	<input type="range" min="1" max="360" value="50" class="slider" id="h"> <label for="h"> <span id="hval">50</span> Hue</label>
 	<input type="range" min="1" max="100" value="50" class="slider" id="s"> <label for="s"><span id="sval">50</span>% Saturation </label>
