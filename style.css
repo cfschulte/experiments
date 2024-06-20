@@ -1,0 +1,154 @@
+@charset "UTF-8";
+/**
+ * Style
+ * build: Tue Jun 18 14:59:13 CDT 2024
+ * Maintained by Department of Human Oncology, UW–Madison, cfschulte@humonc.wisc.edu
+
+
+**/
+
+:root {
+  --color-very-light: hsl(50 75% 98%);
+  --color-light: hsl(40 75% 90%);
+  --color-dark: hsl(40 75% 10%);
+  --font: Merriweather, serif;
+  --size: 10px;
+}
+
+html {
+  font-size: 18px;
+}
+
+body {
+	margin-top: -1em;
+  background: var(--color-very-light);
+  padding: calc(var(--size) * 5);
+  width: 90vw;
+}
+
+header {
+  margin-top: -2rem;
+  background: var(--color-light);
+  padding: calc(var(--size) * 5);
+}
+
+h1 {
+	margin-top: -1em;
+}
+
+nav {
+  container: pagination / inline-size;
+  font-family: var(--font);
+  font-size: 1.0rem;
+  display: grid;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  gap: 3cqi;
+  list-style: "";
+  margin: 0;
+  padding-inline-start: 0;
+}
+
+.pagination li {
+  line-height: 1;
+}
+
+.pagination li a {
+  border: 1px solid var(--color-dark);
+  padding: var(--size) calc(var(--size) * 2);
+  background: var(--color-light);
+  color: var(--color-dark);
+  text-decoration: none;
+  border-radius: 4px;
+  
+  &:hover {
+    background: hsl(from hsl(40 75% 20%) h s 70%);
+  }
+  
+  &[aria-current="true"] {
+    background: var(--color-dark);
+    color: var(--color-light)
+  }
+}
+
+@container pagination (width < 40ch) {
+  .pagination {
+    gap: calc(var(--size) * 5);
+    justify-content: space-between;
+  }
+  
+  li:not(:first-child, :last-child) {
+    display: none;
+  }
+}
+/* small workspaces */
+#artboard {
+	width: 600px;
+	height: 400px;
+	display: block;
+	margin: 2em auto;
+	border: 3px solid var(--color-dark);
+    border-radius: 5px;
+}	
+
+
+#artboard2 {
+	width: 600px;
+	height: 400px;
+	display: block;
+	margin: 2em auto;
+	border: 3px solid var(--color-dark);
+    border-radius: 5px;
+}	
+
+#hsl_play {
+	width: 700px;
+	height: 400px;
+	
+	display: block;
+	margin: 2em auto;
+	border: 1px solid var(--color-dark);
+    border-radius: 5px;
+    background-color: hsl(60 70% 80%);
+}
+
+.slider {
+	margin 5px auto;
+	width: 50%;
+}
+
+#text_div {
+	width: 700px;
+	height: 400px;
+		
+	display: block;
+	margin: 2em auto;
+	border: 1px solid var(--color-dark);
+    border-radius: 5px;
+}
+
+#text_div textarea {
+	margin: 10px auto;
+	display: block;
+	width: 80%;
+	height: 15rem;
+}
+
+#text_div input {
+	margin: 10px auto;
+	display: block;
+	width: 80%;
+}
+
+.button_center {
+	text-align: center;
+	margin: 5px auto;
+}
+
+.button_center button {
+	margin: 2px 1em;
+}
+
