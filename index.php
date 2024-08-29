@@ -16,6 +16,7 @@
 	include "header.php";
 ?>
 <div id="workspace">
+<!-- 
  <div id="text_div">
    <input type="hidden" id="id" value="">
    <input type="text" id="descriptor" placeholder="Give a quick description" >
@@ -24,6 +25,7 @@
    <button id="get_random">Random</button> <button id="update">Update</button> <button id="new_text">New</button>
    </div>
  </div>
+ -->
 
 <!-- 
 

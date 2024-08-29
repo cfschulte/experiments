@@ -9,6 +9,9 @@
 // Setting up the DOM
 document.addEventListener("DOMContentLoaded", ready); // wait for it to load.
 function ready() {
+	var current = document.querySelector ('[aria-current=true]');
+	console.log(current.id);
+	set_tab(current.id);
 	
 ///////////	
 	var page_buttons = document.getElementsByClassName('page_button');
@@ -21,154 +24,56 @@ function ready() {
 			
 			this.setAttribute('aria-current', true);
 			console.log(this.id);
-			switch(this.id){
-				case 'pb0':
-					new_html  = ' <div id="text_div">'+ "\n";
-					new_html +=  ' <input type="hidden" id="id" value="">'+ "\n";
-					new_html +=    '<input type="text" id="descriptor" placeholder="Give a quick description" >'+ "\n";
-					new_html +=    '<textarea id="some_text"  placeholder="What is on your mind?" ></textarea>'+ "\n";
-					new_html +=    '<div class="button_center">'+ "\n";
-					new_html +=    '<button id="get_random">Random</button> <button id="update">Update</button> <button id="new_text">New</button>'+ "\n";
-					new_html +=    '</div>'
-					new_html +=  '</div>' + "\n";
-					new_html += "</canvas>\n";
-					document.getElementById('workspace').innerHTML = new_html;
-					var artboard = document.getElementById('artboard'); 
-					console.log(artboard);
-					load_artboard(artboard);
-					break;
-				case 'pb1':
-					new_html  = '<canvas id="artboard">' + "\n";
-					new_html += "</canvas>\n";
-					document.getElementById('workspace').innerHTML = new_html;
-					var artboard = document.getElementById('artboard'); 
-					console.log(artboard);
-					load_artboard(artboard);
-					break;
-				case 'pb2':
-					new_html  = '<canvas id="artboard2">' + "\n";
-					new_html += "</canvas>\n";
-					document.getElementById('workspace').innerHTML = new_html;
-// 					waitForElm('#artboard2').then((elm) => {
-// 						console.log(elm);
-// 						load_artboard2(elm);
-// 					});
-					var artboard2 = document.getElementById('artboard2'); 
-					console.log(artboard2);
-					load_artboard2(artboard2);
-					break;
-				case 'pb3':
-// 					document.getElementById('workspace').innerHTML = '';
-					new_html  = '<div id="hsl_play">' + "\n";
-					new_html += '	<input type="range" min="1" max="360" value="50" class="slider" id="h"> <label for="h"><span id="hval">50</span> Hue</label>' + "\n";
-					new_html += '	<input type="range" min="1" max="100" value="50" class="slider" id="s"> <label for="s"><span id="sval">50</span>% Saturation </label>' + "\n";
-					new_html += '	<input type="range" min="1" max="100" value="50" class="slider" id="l"> <label for="l"><span id="lval">50</span>% Lightness </label>' + "\n";
-					new_html += '</div>' + "\n";
-					hsl_play = document.getElementById('workspace').innerHTML = new_html;
-					load_hsl_play(hsl_play);
-					break;
-				case 'pb3':
-					break;
-				default:
-					break;
-			}
+			set_tab(this.id);
 		});
 	}
 
-///////////	
-	var text_div = document.getElementById('text_div');
-	if(text_div != null) {
-		load_text_div(text_div);
-	}
-
-///////////	
-	var hsl_play = document.getElementById('hsl_play');
-	if(hsl_play != null){
-		load_hsl_play(hsl_play);
-	} 
-	
-///////////	
-	// respond to clicks in the artboard
-	var artboard = document.getElementById('artboard'); 
-	if(artboard != null){
-		load_artboard(artboard)
-	} 
-		
-	
 }
 
 ///////////////////////////////////////////////
 // Straight functions.
+
 //----------------------------------------
-function load_artboard(artboard) {
-	var rect = artboard.getBoundingClientRect();
-	var context = artboard.getContext("2d");
-
-	var w = artboard.offsetWidth;
-	var h = artboard.offsetHeight;
-	artboard.width = w;
-	artboard.height = h;
-	artboard.addEventListener('click', function(event) {
-
-		let x = Math.floor(event.clientX - rect.left);
-		let y = Math.floor(event.clientY - rect.top);
-// 		console.log('x: ' + x + ', y: ' + y);
-		let r = Math.floor(Math.random() * 256);
-		let g = Math.floor(Math.random() * 256);
-		let b = Math.floor(Math.random() * 256);
-// 		console.log('r: ' + r + ', g: ' + g + ', b: ' + b);
-		context.fillStyle = "rgba("+ r +", " + g +", " + b + ", 70)";
-// 		context.fillStyle = "green";
-		context.fillRect(x, y, 7, 7);
-	});
+function set_tab(tab_id){
+	switch(tab_id){
+		case 'pb0':
+			set_pb0();
+			break;
+		case 'pb1':
+			set_pb1();
+			break;
+		case 'pb2':
+			set_pb2();
+			break;
+		case 'pb3':
+			set_pb3();
+			break;
+		case 'pb4':
+			set_pb4();
+			break;
+		case 'pb5':
+			break;
+		default:
+			break;
+	}
 }
 
 //----------------------------------------
-function load_artboard2(artboard2) {
-	var rect = artboard2.getBoundingClientRect()
 
-	artboard2.width = artboard2.offsetWidth;
-	artboard2.height = artboard2.offsetHeight;
-	var context = artboard2.getContext("2d");
-	var startX;  // these probably don't need to be 'global'
-	var startY;
-	var endX;
-	var endY;
-	
-	var started = false;
-	
-	artboard2.addEventListener('mousedown', function(event){
-		let r = Math.floor(Math.random() * 256);
-		let g = Math.floor(Math.random() * 256);
-		let b = Math.floor(Math.random() * 256);
-		context.strokeStyle = "rgba("+ r +", " + g +", " + b + ", 70)";
-		
-		started = true;
-		startX = Math.floor(event.clientX - rect.left);
-		startY = Math.floor(event.clientY - rect.top);
-		
-		context.beginPath(startX, startY);
-		context.moveTo(startX, startY);
-	});
-	artboard2.addEventListener('mouseup', function(event){
-		started = false;
-// 			endX = Math.floor(event.clientX - rect.left);
-// 			endY = Math.floor(event.clientY - rect.top);
-// 			
-// 			context.lineTo(endX, endY);
-// 			context.stroke();
-	});
-	artboard2.addEventListener('mousemove', function(event){
-		if(started === false) return;
-		
-		endX = Math.floor(event.clientX - rect.left);
-		endY = Math.floor(event.clientY - rect.top);
-		
-		context.lineTo(endX, endY);
-		context.stroke();
-	});
+function set_pb0() {
+	new_html  = ' <div id="text_div">'+ "\n";
+	new_html +=  ' <input type="hidden" id="id" value="">'+ "\n";
+	new_html +=    '<input type="text" id="descriptor" placeholder="Give a quick description" >'+ "\n";
+	new_html +=    '<textarea id="some_text"  placeholder="What is on your mind?" ></textarea>'+ "\n";
+	new_html +=    '<div class="button_center">'+ "\n";
+	new_html +=    '<button id="get_random">Random</button> <button id="update">Update</button> <button id="new_text">New</button>'+ "\n";
+	new_html +=    '</div>'
+	new_html +=  '</div>' + "\n";
+	new_html += "</canvas>\n";
+	document.getElementById('workspace').innerHTML = new_html;
+	var text_div = document.getElementById('text_div');
+	load_text_div(text_div);
 }
-
 
 //----------------------------------------
 function load_text_div(text_div) {
@@ -231,6 +136,108 @@ function load_text_div(text_div) {
 
 
 //----------------------------------------
+function set_pb1() {
+	new_html  = '<canvas id="artboard">' + "\n";
+	new_html += "</canvas>\n";
+	document.getElementById('workspace').innerHTML = new_html;
+	var artboard = document.getElementById('artboard'); 
+	console.log(artboard);
+	load_artboard(artboard);
+}
+
+//----------------------------------------
+function load_artboard(artboard) {
+	var rect = artboard.getBoundingClientRect();
+	var context = artboard.getContext("2d");
+
+	var w = artboard.offsetWidth;
+	var h = artboard.offsetHeight;
+	artboard.width = w;
+	artboard.height = h;
+	artboard.addEventListener('click', function(event) {
+
+		let x = Math.floor(event.clientX - rect.left);
+		let y = Math.floor(event.clientY - rect.top);
+// 		console.log('x: ' + x + ', y: ' + y);
+		let r = Math.floor(Math.random() * 256);
+		let g = Math.floor(Math.random() * 256);
+		let b = Math.floor(Math.random() * 256);
+// 		console.log('r: ' + r + ', g: ' + g + ', b: ' + b);
+		context.fillStyle = "rgba("+ r +", " + g +", " + b + ", 70)";
+// 		context.fillStyle = "green";
+		context.fillRect(x, y, 7, 7);
+	});
+}
+
+
+//----------------------------------------
+function set_pb2() {
+	new_html  = '<canvas id="artboard2">' + "\n";
+	new_html += "</canvas>\n";
+	document.getElementById('workspace').innerHTML = new_html;
+	var artboard2 = document.getElementById('artboard2'); 
+	console.log(artboard2);
+	load_artboard2(artboard2);
+}
+
+//----------------------------------------
+function load_artboard2(artboard2) {
+	var rect = artboard2.getBoundingClientRect()
+
+	artboard2.width = artboard2.offsetWidth;
+	artboard2.height = artboard2.offsetHeight;
+	var context = artboard2.getContext("2d");
+	var startX;  // these probably don't need to be 'global'
+	var startY;
+	var endX;
+	var endY;
+	
+	var started = false;
+	
+	artboard2.addEventListener('mousedown', function(event){
+		let r = Math.floor(Math.random() * 256);
+		let g = Math.floor(Math.random() * 256);
+		let b = Math.floor(Math.random() * 256);
+		context.strokeStyle = "rgba("+ r +", " + g +", " + b + ", 70)";
+		
+		started = true;
+		startX = Math.floor(event.clientX - rect.left);
+		startY = Math.floor(event.clientY - rect.top);
+		
+		context.beginPath(startX, startY);
+		context.moveTo(startX, startY);
+	});
+	artboard2.addEventListener('mouseup', function(event){
+		started = false;
+// 			endX = Math.floor(event.clientX - rect.left);
+// 			endY = Math.floor(event.clientY - rect.top);
+// 			
+// 			context.lineTo(endX, endY);
+// 			context.stroke();
+	});
+	artboard2.addEventListener('mousemove', function(event){
+		if(started === false) return;
+		
+		endX = Math.floor(event.clientX - rect.left);
+		endY = Math.floor(event.clientY - rect.top);
+		
+		context.lineTo(endX, endY);
+		context.stroke();
+	});
+}
+
+//----------------------------------------
+function set_pb3(){
+	new_html  = '<div id="hsl_play">' + "\n";
+	new_html += '	<input type="range" min="1" max="360" value="50" class="slider" id="h"> <label for="h"><span id="hval">50</span> Hue</label>' + "\n";
+	new_html += '	<input type="range" min="1" max="100" value="50" class="slider" id="s"> <label for="s"><span id="sval">50</span>% Saturation </label>' + "\n";
+	new_html += '	<input type="range" min="1" max="100" value="50" class="slider" id="l"> <label for="l"><span id="lval">50</span>% Lightness </label>' + "\n";
+	new_html += '</div>' + "\n";
+	hsl_play = document.getElementById('workspace').innerHTML = new_html;
+	load_hsl_play(hsl_play);
+}
+
+//----------------------------------------
 function load_hsl_play(hsl_play) {
 	var sliders = document.getElementsByClassName('slider') ;
 	
@@ -269,8 +276,40 @@ function load_hsl_play(hsl_play) {
 //     		console.log(this.value);
 		});
 	}
-	
 }
+
+//----------------------------------------
+// https://www.smashingmagazine.com/2024/08/history-future-regular-expressions-javascript/
+function set_pb4(){
+	new_html  = '<br><br><input type="text" class="wide_text" id="input_text" ><br><br>' + "\n";
+	new_html += '<label for="to_replace">To Replace: </label><input type="text" name="to_replace" id="to_replace"> &nbsp; &nbsp; &nbsp;' + "\n";
+	new_html += '<label for="replace_with">Replace with: </label><input type="text" name="replace_with" id="replace_with"> <br><br>' + "\n";
+	new_html += '<button id="doit">RegEx It</button> <br><br>' + "\n";
+	new_html += '<p id="output">This is the output.</p>' + "\n";
+	
+	document.getElementById('workspace').innerHTML = new_html;
+	doit = document.getElementById('doit');
+	console.log(doit);
+	load_regex(doit);
+}
+
+
+//----------------------------------------
+function load_regex(doit){
+// 	var doit = document.getElementById(doit);
+	doit.addEventListener('click', function(event){
+		var input_text = document.getElementById('input_text').value;
+		var to_replace = document.getElementById('to_replace').value;
+		console.log(to_replace);
+		var replace_with = document.getElementById('replace_with').value;
+		console.log(replace_with);
+		let out_text = input_text.replace(to_replace, replace_with);
+		console.log(out_text);
+		
+		document.getElementById('output').innerHTML = out_text;
+	});
+}
+
 
 //----------------------------------------
 async function ajaxCall(action='', data={}) {
