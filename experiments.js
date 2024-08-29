@@ -10,7 +10,7 @@
 document.addEventListener("DOMContentLoaded", ready); // wait for it to load.
 function ready() {
 	var current = document.querySelector ('[aria-current=true]');
-	console.log(current.id);
+// 	console.log(current.id);
 	set_tab(current.id);
 	
 ///////////	
@@ -23,7 +23,7 @@ function ready() {
 			}
 			
 			this.setAttribute('aria-current', true);
-			console.log(this.id);
+// 			console.log(this.id);
 			set_tab(this.id);
 		});
 	}
@@ -52,6 +52,7 @@ function set_tab(tab_id){
 			set_pb4();
 			break;
 		case 'pb5':
+			set_pb5();
 			break;
 		default:
 			break;
@@ -92,6 +93,7 @@ function load_text_div(text_div) {
           if (xhr.readyState == 4 && xhr.status == 200) {
              
              var response = JSON.parse(this.response);
+             console.log('here');
                  console.log(response);
              document.getElementById('id').value = response.id;
              document.getElementById('descriptor').value = response.descriptor;
@@ -141,7 +143,7 @@ function set_pb1() {
 	new_html += "</canvas>\n";
 	document.getElementById('workspace').innerHTML = new_html;
 	var artboard = document.getElementById('artboard'); 
-	console.log(artboard);
+// 	console.log(artboard);
 	load_artboard(artboard);
 }
 
@@ -154,6 +156,15 @@ function load_artboard(artboard) {
 	var h = artboard.offsetHeight;
 	artboard.width = w;
 	artboard.height = h;
+	
+	window.addEventListener('resize', function(event){
+		console.log('it moved');
+		w = artboard.offsetWidth;
+		h = artboard.offsetHeight;
+		artboard.width = w;
+		artboard.height = h;
+	});
+	
 	artboard.addEventListener('click', function(event) {
 
 		let x = Math.floor(event.clientX - rect.left);
@@ -193,6 +204,11 @@ function load_artboard2(artboard2) {
 	var endY;
 	
 	var started = false;
+	window.addEventListener("resize", function(event){
+		artboard2.width = artboard2.offsetWidth;
+		artboard2.height = artboard2.offsetHeight;
+		var context = artboard2.getContext("2d");
+	});
 	
 	artboard2.addEventListener('mousedown', function(event){
 		let r = Math.floor(Math.random() * 256);
@@ -310,11 +326,94 @@ function load_regex(doit){
 	});
 }
 
+//----------------------------------------
+function set_pb5(){
+	new_html  = '<canvas id="artboard3"  width="500" height="500"></canvas>' + "\n";
+	document.getElementById('workspace').innerHTML = new_html;
+	
+	const canvas = document.getElementById('artboard3');
+	
+	load_game_of_life(canvas);
+}
+
+function load_game_of_life(canvas) {
+	const ctx = canvas.getContext('2d');
+	
+// 	const gridSize = 20;
+	const canvasWidth = canvas.width;
+	const canvasHeight = canvas.height;
+	const gridSize = 20;
+	
+	let grid = [];
+	
+	function createGrid() {
+	  grid = [];
+	  for (let x = 0; x < canvasWidth / gridSize; x++) {
+		grid[x] = [];
+		for (let y = 0; y < canvasHeight / gridSize; y++) {
+		  grid[x][y] = Math.random() < 0.5 ? 1 : 0;
+		}
+	  }
+	}
+	
+	function drawGrid() {
+	  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	  for (let x = 0; x < canvasWidth / gridSize; x++) {
+		for (let y = 0; y < canvasHeight / gridSize; y++) {
+		  if (grid[x][y] === 1) {
+			ctx.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+		  }
+		}
+	  }
+	}
+	
+	function countNeighbors(x, y) {
+	  let sum = 0;
+	  for (let i = -1; i < 2; i++) {
+		for (let j = -1; j < 2; j++) {
+		  if (i === 0 && j === 0) continue;
+		  const col = (x + i + grid[0].length) % grid[0].length;
+		  const row = (y + j + grid.length) % grid.length;
+		  sum += grid[col][row];
+		}
+	  }
+	  return sum;
+	}
+	
+	function updateGrid() {
+	  const nextGrid = [];
+	  for (let x = 0; x < canvasWidth / gridSize; x++) {
+		nextGrid[x] = [];
+		for (let y = 0; y < canvasHeight / gridSize; y++) {
+		  const state = grid[x][y];
+		  const neighbors = countNeighbors(x, y);
+	
+		  if (state === 0 && neighbors === 3) {
+			nextGrid[x][y] = 1;
+		  } else if (state === 1 && (neighbors < 2 || neighbors > 3)) {
+			nextGrid[x][y] = 0;
+		  } else {
+			nextGrid[x][y] = state;
+		  }
+		}
+	  }
+	  grid = nextGrid;
+	}
+	
+	function gameLoop() {
+	  drawGrid();
+	  updateGrid();
+	  requestAnimationFrame(gameLoop);
+	}
+	
+	createGrid();
+	gameLoop();
+}
 
 //----------------------------------------
 async function ajaxCall(action='', data={}) {
 // 	console.log(id); 
-	const response = await fetch("/random_text_db/controllers/ajax_parser.php", {
+	const response = await fetch("./backend.php", {
 		// Be aware that there are other options if you want more flexibility
 		method: "POST", // *GET, POST, PUT, DELETE, etc.
 		headers: {

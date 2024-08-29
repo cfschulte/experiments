@@ -48,6 +48,7 @@ function get_random_text() {
 	$db_obj = new DbClass();
 	// How many quotes are there?
 	$sql = "SELECT COUNT(id) FROM repository";
+// 	$sql = "SELECT COUNT(id) FROM text_block";
 	$db_result = $db_obj->getTableNoParams($sql);
 	
 	$ceiling = $db_result[0]['COUNT(id)'];
