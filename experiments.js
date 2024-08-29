@@ -22,6 +22,21 @@ function ready() {
 			this.setAttribute('aria-current', true);
 			console.log(this.id);
 			switch(this.id){
+				case 'pb0':
+					new_html  = ' <div id="text_div">'+ "\n";
+					new_html +=  ' <input type="hidden" id="id" value="">'+ "\n";
+					new_html +=    '<input type="text" id="descriptor" placeholder="Give a quick description" >'+ "\n";
+					new_html +=    '<textarea id="some_text"  placeholder="What is on your mind?" ></textarea>'+ "\n";
+					new_html +=    '<div class="button_center">'+ "\n";
+					new_html +=    '<button id="get_random">Random</button> <button id="update">Update</button> <button id="new_text">New</button>'+ "\n";
+					new_html +=    '</div>'
+					new_html +=  '</div>' + "\n";
+					new_html += "</canvas>\n";
+					document.getElementById('workspace').innerHTML = new_html;
+					var artboard = document.getElementById('artboard'); 
+					console.log(artboard);
+					load_artboard(artboard);
+					break;
 				case 'pb1':
 					new_html  = '<canvas id="artboard">' + "\n";
 					new_html += "</canvas>\n";
