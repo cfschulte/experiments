@@ -328,7 +328,8 @@ function load_regex(doit){
 
 //----------------------------------------
 function set_pb5(){
-	new_html  = '<canvas id="artboard3"  width="600" height="600"></canvas>' + "\n";
+	new_html  = '<canvas id="artboard3"  width="600" height="600"></canvas><br>' + "\n";
+	new_html += '<button id="start_stop">Start</button>' + "\n";
 	document.getElementById('workspace').innerHTML = new_html;
 	
 	const canvas = document.getElementById('artboard3');
@@ -343,6 +344,23 @@ function load_game_of_life(canvas) {
 	const canvasWidth = canvas.width;
 	const canvasHeight = canvas.height;
 	const gridSize = 10;
+	
+	let start_stop = document.getElementById('start_stop');
+	let isrunning = false;
+	
+	start_stop.addEventListener('click', function(){
+		let title = this.innerHTML;
+		console.log(title);
+		if(title == 'Start') {
+			this.innerHTML = 'Stop';
+			isrunning = true;
+			gameLoop();
+		} else {
+			this.innerHTML = 'Start';
+			isrunning = false;
+			gameLoop();
+		}
+	});
 	
 	let grid = [];
 	
@@ -402,13 +420,17 @@ function load_game_of_life(canvas) {
 	
 	function gameLoop() {
 	  drawGrid();
+// 	  console.log(isrunning);
 	  setTimeout(function(){
+	  	if(isrunning == true){
 		  updateGrid();
 		  requestAnimationFrame(gameLoop);
+		}  
 	  }, 300);
 	}
 	
 	createGrid();
+	drawGrid();
 	gameLoop();
 }
 
