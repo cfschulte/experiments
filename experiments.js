@@ -328,7 +328,7 @@ function load_regex(doit){
 
 //----------------------------------------
 function set_pb5(){
-	new_html  = '<canvas id="artboard3"  width="500" height="500"></canvas>' + "\n";
+	new_html  = '<canvas id="artboard3"  width="600" height="600"></canvas>' + "\n";
 	document.getElementById('workspace').innerHTML = new_html;
 	
 	const canvas = document.getElementById('artboard3');
@@ -342,7 +342,7 @@ function load_game_of_life(canvas) {
 // 	const gridSize = 20;
 	const canvasWidth = canvas.width;
 	const canvasHeight = canvas.height;
-	const gridSize = 20;
+	const gridSize = 10;
 	
 	let grid = [];
 	
@@ -402,8 +402,10 @@ function load_game_of_life(canvas) {
 	
 	function gameLoop() {
 	  drawGrid();
-	  updateGrid();
-	  requestAnimationFrame(gameLoop);
+	  setTimeout(function(){
+		  updateGrid();
+		  requestAnimationFrame(gameLoop);
+	  }, 300);
 	}
 	
 	createGrid();
