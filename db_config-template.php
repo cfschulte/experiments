@@ -5,7 +5,7 @@
 ///////////////////
 // remote
 $DB_SERVER    = 'localhost';  // It can be a remote server
-$DB_USER      = '<the user>';    // I've been using physics_user
+$DB_USER      = 'physics_user';    // I've been using physics_user
 $DB_PASSWORD  = '<user password>';
 $DATABASE     = 'experiment';
 $DB_PORT      = '3306';
